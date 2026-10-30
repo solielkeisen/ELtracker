@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ec">
+  <meta name="description" content="A clear, independent guide to Indian election results, parties, schedules and ideas.">
+  <title>Janmat — Indian Elections, Clearly Counted</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f4ec;
+      --paper-deep: #efede4;
+      --ink: #24231f;
+      --muted: #716f64;
+      --line: #282721;
+      --soft-line: #d7d3c5;
+      --saffron: #e87932;
+      --green: #277454;
+      --blue: #355a91;
+      --red: #a64036;
+      --shadow: 5px 5px 0 rgba(36, 35, 31, .12);
+      --serif: "DM Serif Display", Georgia, serif;
+      --sans: "DM Sans", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.5 var(--sans);
+    }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topline {
+      min-height: 36px;
+      padding: 7px 24px;
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      background: var(--paper);
+      border-bottom: 1.5px solid var(--line);
+    }
+    .header-inner {
+      min-height: 98px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding-block: 16px 12px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 9px;
+      color: var(--ink);
+      text-decoration: none;
+      font: 29px/1 var(--serif);
+      letter-spacing: -.04em;
+    }
+    .brand-mark {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--saffron);
+      border: 1px solid var(--line);
+      transform: rotate(45deg);
+    }
+    .brand small {
+      color: var(--muted);
+      font: 700 10px/1 var(--sans);
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+    .header-tools { display: flex; align-items: center; gap: 12px; }
+    .edition { color: var(--muted); font-size: 13px; text-align: right; }
+    .menu-toggle {
+      display: none;
+      border: 1.5px solid var(--line);
+      background: transparent;
+      padding: 8px 11px;
+      font-weight: 700;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-top: 16px;
+    }
+    .nav a {
+      position: relative;
+      padding: 0 0 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .nav a::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--ink);
+      content: "";
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .18s ease;
+    }
+    .nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
+
+    main { min-height: 64vh; }
+    .view { display: none; padding: 34px 0 76px; }
+    .view.active { display: block; animation: appear .24s ease both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 25px; height: 2px; background: var(--ink); content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+    h1 { max-width: 700px; margin: 18px 0 14px; font-size: clamp(42px, 6vw, 72px); line-height: .99; letter-spacing: -.035em; }
+    h2 { margin-bottom: 8px; font-size: clamp(26px, 3vw, 34px); line-height: 1.12; }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.15; }
+    .lede { max-width: 670px; color: #48473f; font-size: 17px; }
+    .muted { color: var(--muted); }
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 34px 0 11px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--line);
+    }
+    .section-heading h2, .section-heading h3 { margin: 0; }
+    .section-heading span { color: var(--muted); font-size: 13px; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(330px, .98fr);
+      align-items: center;
+      gap: 54px;
+      min-height: 370px;
+      padding: 30px 0 35px;
+    }
+    .hero-copy h1 { max-width: 540px; }
+    .hero-copy .lede { max-width: 500px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 9px 15px;
+      border: 1.5px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .button:hover { box-shadow: var(--shadow); transform: translate(-1px, -1px); }
+    .button.primary { background: var(--ink); color: var(--paper); }
+    .hero-visual {
+      padding: 20px;
+      border: 1.5px solid var(--line);
+      background: #f0eee5;
+      box-shadow: var(--shadow);
+    }
+    .visual-top { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .visual-top strong { font-size: 13px; }
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(18, 1fr);
+      gap: 5px;
+      margin: 22px auto 18px;
+      max-width: 440px;
+    }
+    .seat-dot {
+      aspect-ratio: 1;
+      border: 1px solid rgba(36, 35, 31, .28);
+      border-radius: 50%;
+      background: var(--party);
+    }
+    .majority-line {
+      position: relative;
+      height: 14px;
+      margin: 0 0 7px;
+      border-top: 3px solid var(--line);
+    }
+    .majority-line::after {
+      position: absolute;
+      top: -8px;
+      left: 50.1%;
+      height: 12px;
+      border-left: 1px dashed var(--red);
+      content: "";
+    }
+    .chart-labels { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .chart-labels strong { display: block; font-size: 20px; line-height: 1.1; }
+    .chart-labels .center { color: var(--red); text-align: center; }
+    .parties-grid { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1.5px solid var(--line); border-left: 1.5px solid var(--line); }
+    .party-tile {
+      display: flex;
+      min-height: 132px;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 13px 15px;
+      border-right: 1.5px solid var(--line);
+      border-bottom: 1.5px solid var(--line);
+      background: var(--party);
+      color: var(--party-ink, #fff);
+      text-decoration: none;
+    }
+    .party-tile:hover { filter: brightness(1.06); }
+    .party-tile .seats { font-size: 12px; font-weight: 700; }
+    .party-tile .symbol { align-self: flex-end; font: 700 27px/1 var(--serif); }
+    .party-tile strong { display: block; font-size: 15px; line-height: 1.2; }
+    .party-tile small { display: block; margin-top: 4px; opacity: .84; font-size: 13px; }
+    .tile-note {
+      grid-column: span 4;
+      display: flex;
+      align-items: center;
+      padding: 18px;
+      border-right: 1.5px solid var(--line);
+      border-bottom: 1.5px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 13px 15px;
+      border-left: 3px solid var(--saffron);
+      background: var(--paper-deep);
+      color: #56544b;
+      font-size: 13px;
+    }
+    .notice strong { color: var(--ink); }
+    .two-col { display: grid; grid-template-columns: 1.2fr .8fr; gap: 30px; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat {
+      min-height: 110px;
+      padding: 14px;
+      border: 1.5px solid var(--line);
+      background: rgba(255,255,255,.18);
+    }
+    .stat strong { display: block; margin-bottom: 5px; font: 32px/1 var(--serif); }
+    .stat span { color: var(--muted); font-size: 12px; }
+    .list-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 13px 14px;
+      border: 1.5px solid var(--line);
+      border-bottom: 0;
+      text-decoration: none;
+    }
+    .list-row:last-child { border-bottom: 1.5px solid var(--line); }
+    .list-row strong { display: block; font-size: 14px; }
+    .list-row span { color: var(--muted); font-size: 13px; }
+    .arrow { color: var(--muted); font-size: 20px; }
+    .toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+    .search {
+      min-width: min(280px, 100%);
+      min-height: 42px;
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid var(--line);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+    }
+    .filter-chip {
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1.5px solid var(--line);
+      background: transparent;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .filter-chip.active { background: var(--ink); color: var(--paper); }
+    .party-directory { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .party-card {
+      min-height: 180px;
+      padding: 17px;
+      border: 1.5px solid var(--line);
+      border-top: 7px solid var(--party);
+      background: rgba(255,255,255,.16);
+    }
+    .party-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .party-card .abbr { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+    .party-card p { margin: 8px 0 14px; color: var(--muted); font-size: 13px; }
+    .party-card .mini-stat { padding-top: 10px; border-top: 1px solid var(--soft-line); font-size: 12px; }
+    .party-card .mini-stat strong { margin-right: 6px; font-size: 18px; }
+    .result-bar { margin: 15px 0; }
+    .bar-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; font-size: 13px; }
+    .bar-track { height: 15px; border: 1px solid var(--line); background: transparent; }
+    .bar-fill { height: 100%; background: var(--party); }
+    .results-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr); gap: 34px; }
+    .result-card { padding: 20px; border: 1.5px solid var(--line); background: var(--paper-deep); }
+    .result-card .big { margin: 8px 0 0; font: 54px/.95 var(--serif); }
+    .timeline { position: relative; margin: 27px 0 0 7px; padding-left: 24px; border-left: 1.5px solid var(--line); }
+    .event { position: relative; padding: 0 0 25px; }
+    .event:last-child { padding-bottom: 0; }
+    .event::before {
+      position: absolute;
+      top: 5px;
+      left: -30px;
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: var(--saffron);
+      content: "";
+    }
+    .event time { display: block; color: var(--muted); font-size: 12px; }
+    .event strong { display: block; margin-top: 3px; font-size: 14px; }
+    .event p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+    .opinion-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+    .opinion {
+      min-height: 210px;
+      padding: 19px;
+      border: 1.5px solid var(--line);
+      background: rgba(255,255,255,.18);
+    }
+    .opinion .category { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .opinion h3 { margin-top: 13px; font-size: 23px; }
+    .opinion p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+    .opinion details { margin-top: 15px; border-top: 1px solid var(--soft-line); padding-top: 10px; }
+    .opinion summary { cursor: pointer; font-size: 12px; font-weight: 700; }
+    .opinion details p { padding-top: 8px; }
+
+    footer { border-top: 1.5px solid var(--line); background: var(--paper-deep); }
+    .footer-inner { display: grid; grid-template-columns: 1.6fr repeat(3, .7fr); gap: 25px; padding-block: 29px; }
+    .footer-brand { font: 25px var(--serif); }
+    footer p { max-width: 360px; margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+    .footer-col strong { display: block; margin-bottom: 9px; color: var(--muted); font-size: 11px; letter-spacing: .12em; }
+    .footer-col a { display: block; width: fit-content; margin: 5px 0; text-decoration: none; font-size: 13px; }
+    .footer-col a:hover { text-decoration: underline; }
+    .fine-print { padding: 12px 0 20px; border-top: 1px solid var(--soft-line); color: var(--muted); font-size: 11px; }
+    .empty-state { grid-column: 1 / -1; padding: 25px; border: 1px solid var(--soft-line); color: var(--muted); }
+
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 22px; }
+      .hero-visual { max-width: 580px; }
+      .parties-grid { grid-template-columns: repeat(3, 1fr); }
+      .tile-note { grid-column: span 2; }
+      .party-directory { grid-template-columns: repeat(2, 1fr); }
+      .results-layout, .two-col { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; }
+      .footer-brand-block { grid-column: 1 / -1; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 32px, 1120px); }
+      .topline { font-size: 9px; }
+      .header-inner { min-height: 76px; gap: 10px; }
+      .brand { font-size: 25px; }
+      .edition { display: none; }
+      .menu-toggle { display: inline-block; }
+      .nav { display: none; width: 100%; gap: 0; margin-top: 7px; border-top: 1px solid var(--soft-line); }
+      .nav.open { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .nav a { padding: 12px 8px; border-bottom: 1px solid var(--soft-line); }
+      .nav a::after { display: none; }
+      .view { padding-top: 25px; }
+      .hero { min-height: 0; padding-top: 15px; }
+      .hero-visual { padding: 14px; }
+      .seat-grid { gap: 3px; }
+      .parties-grid { grid-template-columns: repeat(2, 1fr); }
+      .party-tile { min-height: 116px; padding: 11px; }
+      .tile-note { grid-column: span 2; }
+      .party-directory, .opinion-grid { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .footer-brand-block { grid-column: 1 / -1; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 3px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">Independent election information · historical result data clearly labelled</div>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div>
+        <a class="brand" href="#results" aria-label="Janmat home"><span class="brand-mark" aria-hidden="true"></span>Janmat <small>जनमत</small></a>
+        <nav class="nav" id="site-nav" aria-label="Main navigation">
+          <a href="#parties" data-page="parties">Parties</a>
+          <a href="#results" data-page="results">Results</a>
+          <a href="#schedule" data-page="schedule">Schedule</a>
+          <a href="#opinions" data-page="opinions">Opinions</a>
+        </nav>
+      </div>
+      <div class="header-tools">
+        <div class="edition">India · Lok Sabha<br><strong>2024 general election</strong></div>
+        <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="view active" id="view-results" data-view="results" aria-labelledby="results-title">
+      <div class="wrap">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow">Lok Sabha · 18th general election</div>
+            <h1 id="results-title">Every vote counted. Every seat in view.</h1>
+            <p class="lede">A clear, independent guide to India’s parliamentary election: who won, where parties stand, and what comes next.</p>
+            <div class="actions">
+              <a class="button primary" href="#results" data-page-link="results">Explore the results <span aria-hidden="true">→</span></a>
+              <a class="button" href="#parties" data-page-link="parties">Meet the parties <span aria-hidden="true">→</span></a>
+            </div>
+            <p class="muted" style="margin:17px 0 0;font-size:12px">Historical final results · Counting concluded 4 June 2024</p>
+          </div>
+          <div class="hero-visual" aria-label="Seat count graphic showing 543 seats, with 272 needed for a majority">
+            <div class="visual-top"><strong>543 seats in the Lok Sabha</strong><span class="muted">Final count · 2024</span></div>
+            <div class="seat-grid" id="seat-grid" aria-hidden="true"></div>
+            <div class="majority-line"></div>
+            <div class="chart-labels">
+              <div><strong>234</strong>INDIA bloc</div>
+              <div class="center"><strong>272</strong>majority mark</div>
+              <div style="text-align:right"><strong>293</strong>NDA alliance</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <h2>Seats won, at a glance</h2>
+          <span>Party seats · 2024 final count</span>
+        </div>
+        <div class="parties-grid" id="results-parties"></div>
+        <div class="notice"><span aria-hidden="true">ⓘ</span><div><strong>Historical data, not a live tally.</strong> This page shows the 2024 Lok Sabha general election result. Janmat is an independent demo; figures should be checked against the Election Commission of India for official use.</div></div>
+
+        <div class="two-col" style="margin-top:33px">
+          <section>
+            <div class="section-heading" style="margin-top:0"><h2>How the count landed</h2><span>Alliance totals</span></div>
+            <div class="result-bar"><div class="bar-label"><strong>NDA</strong><span>293 seats · majority</span></div><div class="bar-track"><div class="bar-fill" style="--party:#e87932;width:54%"></div></div></div>
+            <div class="result-bar"><div class="bar-label"><strong>INDIA bloc</strong><span>234 seats</span></div><div class="bar-track"><div class="bar-fill" style="--party:#355a91;width:43.1%"></div></div></div>
+            <div class="result-bar"><div class="bar-label"><strong>Other parties</strong><span>16 seats</span></div><div class="bar-track"><div class="bar-fill" style="--party:#277454;width:3%"></div></div></div>
+            <p class="muted" style="font-size:12px">The 543 elected members represent single-member constituencies across India.</p>
+          </section>
+          <section>
+            <div class="section-heading" style="margin-top:0"><h2>Explore the tracker</h2><span>Choose a page</span></div>
+            <a class="list-row" href="#parties" data-page-link="parties"><div><strong>Parties &amp; alliances</strong><span>Compare leading parties and their seats</span></div><span class="arrow">→</span></a>
+            <a class="list-row" href="#schedule" data-page-link="schedule"><div><strong>Election schedule</strong><span>Past milestones and what is announced next</span></div><span class="arrow">→</span></a>
+            <a class="list-row" href="#opinions" data-page-link="opinions"><div><strong>Opinions &amp; analysis</strong><span>Ideas shaping the national conversation</span></div><span class="arrow">→</span></a>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-parties" data-view="parties" aria-labelledby="parties-title">
+      <div class="wrap">
+        <div class="eyebrow">The lists · Parties</div>
+        <h1 id="parties-title">The parties behind the numbers.</h1>
+        <p class="lede">Explore the national parties and regional forces that shaped the 2024 Lok Sabha result. Search by party or filter by alliance.</p>
+        <div class="notice"><span aria-hidden="true">ⓘ</span><div><strong>2024 election reference.</strong> Seat totals below are historical final results, not current seat counts or live projections.</div></div>
+        <div class="toolbar" role="group" aria-label="Filter parties">
+          <input class="search" id="party-search" type="search" placeholder="Search parties…" aria-label="Search parties">
+          <button class="filter-chip active" type="button" data-filter="all">All parties</button>
+          <button class="filter-chip" type="button" data-filter="NDA">NDA</button>
+          <button class="filter-chip" type="button" data-filter="INDIA">INDIA bloc</button>
+          <button class="filter-chip" type="button" data-filter="Other">Others</button>
+        </div>
+        <div class="party-directory" id="party-directory"></div>
+        <div class="section-heading"><h2>Reading the result</h2><span>Seats are not the whole story</span></div>
+        <p class="lede" style="font-size:15px">India’s parliamentary elections are fought constituency by constituency. National totals show the broad balance, while alliances and regional parties can be decisive in forming a government. Tap through to the results page for a seat-by-seat overview.</p>
+        <a class="button" href="#results" data-page-link="results">View election results →</a>
+      </div>
+    </section>
+
+    <section class="view" id="view-schedule" data-view="schedule" aria-labelledby="schedule-title">
+      <div class="wrap">
+        <div class="eyebrow">The race · Schedule</div>
+        <h1 id="schedule-title">A long election, one day of counting.</h1>
+        <p class="lede">India’s 2024 general election took place in seven phases. Here are the key dates—and what to expect before the next national poll.</p>
+        <div class="results-layout" style="margin-top:30px">
+          <section>
+            <div class="section-heading" style="margin-top:0"><h2>2024 general election</h2><span>Historical timeline</span></div>
+            <div class="timeline">
+              <div class="event"><time datetime="2024-03-16">16 March 2024</time><strong>Election schedule announced</strong><p>The Election Commission of India announced the seven-phase polling calendar.</p></div>
+              <div class="event"><time datetime="2024-04-19">19 April 2024</time><strong>Polling began</strong><p>Phase one opened voting across constituencies in multiple states and union territories.</p></div>
+              <div class="event"><time datetime="2024-06-01">1 June 2024</time><strong>Final phase of polling</strong><p>Voting concluded after seven phases over 44 days.</p></div>
+              <div class="event"><time datetime="2024-06-04">4 June 2024</time><strong>Votes counted</strong><p>Results for all 543 Lok Sabha constituencies were declared.</p></div>
+            </div>
+          </section>
+          <aside>
+            <div class="result-card">
+              <div class="eyebrow">Next national election</div>
+              <p class="big">2029</p>
+              <p style="margin:8px 0 0"><strong>Lok Sabha election</strong></p>
+              <p class="muted" style="margin:10px 0 0;font-size:13px">The next general election is expected by 2029 under the normal parliamentary term. Exact dates and phases have not been announced. The Election Commission of India publishes the official schedule.</p>
+              <a class="button" style="margin-top:16px" href="https://www.eci.gov.in/" target="_blank" rel="noreferrer">Election Commission of India ↗</a>
+            </div>
+            <div class="notice"><div><strong>Dates are official only when notified.</strong> We will label any future schedule as announced only after the Election Commission publishes it.</div></div>
+          </aside>
+        </div>
+        <div class="section-heading"><h2>What happens during a general election?</h2><span>From announcement to government</span></div>
+        <div class="stat-row">
+          <div class="stat"><strong>01</strong><span>Election schedule &amp; model code</span></div>
+          <div class="stat"><strong>02</strong><span>Campaigning &amp; nominations</span></div>
+          <div class="stat"><strong>03</strong><span>Polling in one or more phases</span></div>
+          <div class="stat"><strong>04</strong><span>Counting &amp; result declaration</span></div>
+          <div class="stat"><strong>05</strong><span>Government formation</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-opinions" data-view="opinions" aria-labelledby="opinions-title">
+      <div class="wrap">
+        <div class="eyebrow">The conversation · Opinions</div>
+        <h1 id="opinions-title">Beyond the seat count.</h1>
+        <p class="lede">Election results tell us who won. These explainers explore the questions behind the numbers—without telling you what to think.</p>
+        <div class="notice"><span aria-hidden="true">✳</span><div><strong>Independent analysis.</strong> These short editorial explainers are contextual, not polling forecasts or official statements.</div></div>
+        <div class="section-heading"><h2>Ideas worth a closer look</h2><span>Election explainers</span></div>
+        <div class="opinion-grid">
+          <article class="opinion">
+            <span class="category">How elections work</span>
+            <h3>Why a national vote is really 543 local contests</h3>
+            <p>India’s first-past-the-post system turns constituency-level choices into a national parliament.</p>
+            <details><summary>Read the short view</summary><p>Each constituency elects one MP. The candidate with the most votes wins that seat, even without an absolute majority. That is why a party’s share of the national vote and its share of seats can differ—and why regional strength matters.</p></details>
+          </article>
+          <article class="opinion">
+            <span class="category">Coalitions</span>
+            <h3>How alliances turn seat counts into a government</h3>
+            <p>Parties negotiate not only over numbers, but also priorities, ministries and shared programmes.</p>
+            <details><summary>Read the short view</summary><p>A majority in the Lok Sabha is built from members who can support a government. Pre-poll and post-poll alliances can both matter; the public seat tally is a starting point for understanding the negotiations, not a full account of them.</p></details>
+          </article>
+          <article class="opinion">
+            <span class="category">Representation</span>
+            <h3>What a constituency can—and cannot—tell us</h3>
+            <p>Local results reflect local candidates and concerns as well as national campaigns.</p>
+            <details><summary>Read the short view</summary><p>Constituency outcomes combine many factors: candidate reputation, local issues, party organisation and broader political mood. A single seat is one part of a larger pattern; it should not be treated as a perfect proxy for every voter in a region.</p></details>
+          </article>
+          <article class="opinion">
+            <span class="category">Counting &amp; trust</span>
+            <h3>Where to find the authoritative result</h3>
+            <p>Use official sources for final figures; independent trackers are best read as guides.</p>
+            <details><summary>Read the short view</summary><p>The Election Commission of India publishes official election schedules and constituency results. Check primary sources when a number is consequential, and note whether a report describes a lead during counting or a declared final result.</p></details>
+          </article>
+        </div>
+        <div class="section-heading"><h2>Stay curious, check the source</h2><span>Independent information</span></div>
+        <p class="lede" style="font-size:15px">Janmat is a concept site for making election information easier to navigate. It is not affiliated with any political party or the Election Commission of India.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand-block">
+        <a class="brand footer-brand" href="#results" data-page-link="results"><span class="brand-mark" aria-hidden="true"></span>Janmat <small>जनमत</small></a>
+        <p>An independent guide to Indian elections. Clear numbers, context and perspectives—without the noise.</p>
+      </div>
+      <div class="footer-col"><strong>THE ELECTION</strong><a href="#results" data-page-link="results">Results</a><a href="#schedule" data-page-link="schedule">Schedule</a></div>
+      <div class="footer-col"><strong>THE PARTIES</strong><a href="#parties" data-page-link="parties">Parties</a><a href="#opinions" data-page-link="opinions">Opinions</a></div>
+      <div class="footer-col"><strong>THE SOURCE</strong><a href="https://www.eci.gov.in/" target="_blank" rel="noreferrer">Election Commission ↗</a><a href="#schedule" data-page-link="schedule">About this tracker</a></div>
+    </div>
+    <div class="wrap fine-print">Historical 2024 election figures are provided for demonstration and general information. Verify official results and future schedules with the Election Commission of India. © 2026 Janmat</div>
+  </footer>
+
+  <script>
+    const parties = [
+      { name: "Bharatiya Janata Party", short: "BJP", leader: "Narendra Modi", seats: 240, bloc: "NDA", color: "#e87932", ink: "#241c16", symbol: "कमल", note: "National party" },
+      { name: "Indian National Congress", short: "INC", leader: "Mallikarjun Kharge", seats: 99, bloc: "INDIA", color: "#355a91", ink: "#fff", symbol: "हाथ", note: "National party" },
+      { name: "Samajwadi Party", short: "SP", leader: "Akhilesh Yadav", seats: 37, bloc: "INDIA", color: "#d84b54", ink: "#fff", symbol: "साइकिल", note: "Uttar Pradesh" },
+      { name: "All India Trinamool Congress", short: "AITC", leader: "Mamata Banerjee", seats: 29, bloc: "INDIA", color: "#277454", ink: "#fff", symbol: "फूल", note: "West Bengal" },
+      { name: "Dravida Munnetra Kazhagam", short: "DMK", leader: "M. K. Stalin", seats: 22, bloc: "INDIA", color: "#a64036", ink: "#fff", symbol: "उगता सूरज", note: "Tamil Nadu" },
+      { name: "Telugu Desam Party", short: "TDP", leader: "N. Chandrababu Naidu", seats: 16, bloc: "NDA", color: "#c5a637", ink: "#241f12", symbol: "साइकिल", note: "Andhra Pradesh" },
+      { name: "Janata Dal (United)", short: "JD(U)", leader: "Nitish Kumar", seats: 12, bloc: "NDA", color: "#58816b", ink: "#fff", symbol: "तीर", note: "Bihar" },
+      { name: "Shiv Sena (Uddhav Balasaheb Thackeray)", short: "SHS (UBT)", leader: "Uddhav Thackeray", seats: 9, bloc: "INDIA", color: "#52718a", ink: "#fff", symbol: "मशाल", note: "Maharashtra" },
+      { name: "Nationalist Congress Party — Sharadchandra Pawar", short: "NCP (SP)", leader: "Sharad Pawar", seats: 8, bloc: "INDIA", color: "#826498", ink: "#fff", symbol: "तुतारी", note: "Maharashtra" },
+      { name: "Communist Party of India (Marxist)", short: "CPI(M)", leader: "M. A. Baby", seats: 4, bloc: "INDIA", color: "#b4483f", ink: "#fff", symbol: "हथौड़ा", note: "National party" },
+      { name: "Other parties & independents", short: "OTHERS", leader: "Regional representatives", seats: 67, bloc: "Other", color: "#58604b", ink: "#fff", symbol: "भारत", note: "Across India" }
+    ];
+
+    const resultsGrid = document.getElementById("results-parties");
+    const directory = document.getElementById("party-directory");
+    const seatGrid = document.getElementById("seat-grid");
+    const fmt = new Intl.NumberFormat("en-IN");
+
+    function renderResults() {
+      const featured = parties.slice(0, 10);
+      resultsGrid.innerHTML = featured.map((party) => `
+        <a href="#parties" data-page-link="parties" class="party-tile" style="--party:${party.color};--party-ink:${party.ink}">
+          <span class="seats">${party.seats} seats</span><span class="symbol" lang="hi">${party.symbol}</span>
+          <span><strong>${party.name}</strong><small>${party.bloc === "Other" ? "Outside the two largest alliances" : party.bloc + " alliance"}</small></span>
+        </a>`).join("") + `
+        <div class="party-tile" style="--party:${parties[10].color};--party-ink:${parties[10].ink}">
+          <span class="seats">67 seats</span><span class="symbol" lang="hi">${parties[10].symbol}</span>
+          <span><strong>Other parties &amp; independents</strong><small>Combined total across India</small></span>
+        </div>
+        <div class="tile-note">The complete House has 543 elected seats. Majority requires support from 272 members.</div>`;
+    }
+
+    function renderDirectory(query = "", filter = "all") {
+      const q = query.trim().toLowerCase();
+      const matches = parties.filter((party) =>
+        (filter === "all" || party.bloc === filter) &&
+        [party.name, party.short, party.leader, party.note].some((value) => value.toLowerCase().includes(q))
+      );
+      if (!matches.length) {
+        directory.innerHTML = '<div class="empty-state">No parties match that search. Try another name or clear the filter.</div>';
+        return;
+      }
+      directory.innerHTML = matches.map((party) => `
+        <article class="party-card" style="--party:${party.color}">
+          <div class="party-card-top"><div><div class="abbr">${party.short}</div><h3>${party.name}</h3></div><span class="muted" style="font:700 19px var(--serif)" lang="hi">${party.symbol}</span></div>
+          <p>${party.leader} · ${party.note}</p>
+          <div class="mini-stat"><strong>${fmt.format(party.seats)}</strong> seats · ${party.bloc === "Other" ? "Other" : party.bloc + " alliance"}</div>
+        </article>`).join("");
+    }
+
+    const seatColors = [
+      { count: 293, color: "#e87932" },
+      { count: 234, color: "#355a91" },
+      { count: 16, color: "#277454" }
+    ];
+    const dots = seatColors.flatMap(({count, color}) => Array.from({length: count}, () => color));
+    for (let i = dots.length - 1; i > 0; i--) {
+      const j = Math.floor((i * 73 + 19) % (i + 1));
+      [dots[i], dots[j]] = [dots[j], dots[i]];
+    }
+    seatGrid.innerHTML = dots.map((color) => `<span class="seat-dot" style="--party:${color}"></span>`).join("");
+
+    renderResults();
+    renderDirectory();
+
+    let activeFilter = "all";
+    document.getElementById("party-search").addEventListener("input", (event) => {
+      renderDirectory(event.target.value, activeFilter);
+    });
+    document.querySelectorAll(".filter-chip").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        document.querySelectorAll(".filter-chip").forEach((chip) => chip.classList.toggle("active", chip === button));
+        renderDirectory(document.getElementById("party-search").value, activeFilter);
+      });
+    });
+
+    function showPage(page, updateHistory = true) {
+      const allowed = ["parties", "results", "schedule", "opinions"];
+      const current = allowed.includes(page) ? page : "results";
+      document.querySelectorAll(".view").forEach((view) => {
+        const active = view.dataset.view === current;
+        view.classList.toggle("active", active);
+        view.setAttribute("aria-hidden", String(!active));
+      });
+      document.querySelectorAll(".nav a").forEach((link) => {
+        if (link.dataset.page === current) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      });
+      if (updateHistory && location.hash !== `#${current}`) history.pushState({page: current}, "", `#${current}`);
+      document.getElementById("site-nav").classList.remove("open");
+      document.getElementById("menu-toggle").setAttribute("aria-expanded", "false");
+      window.scrollTo({top: 0, behavior: "smooth"});
+      document.title = `${current[0].toUpperCase() + current.slice(1)} — Janmat`;
+    }
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("[data-page-link], .nav a[data-page]");
+      if (!link) return;
+      event.preventDefault();
+      showPage(link.dataset.pageLink || link.dataset.page);
+    });
+    window.addEventListener("popstate", () => showPage(location.hash.slice(1), false));
+    window.addEventListener("hashchange", () => {
+      const page = location.hash.slice(1);
+      if (["parties", "results", "schedule", "opinions"].includes(page)) showPage(page, false);
+    });
+    document.getElementById("menu-toggle").addEventListener("click", (event) => {
+      const nav = document.getElementById("site-nav");
+      const isOpen = nav.classList.toggle("open");
+      event.currentTarget.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    if (location.hash) showPage(location.hash.slice(1), false);
+  </script>
+</body>
+</html>
